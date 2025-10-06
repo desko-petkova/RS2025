@@ -1,0 +1,129 @@
+namespace ToDoList
+{
+    internal class Program
+    {
+        static List<string> toDoList = new List<string>();
+        static string filePath = "tasks.txt";
+       
+        static void Main(string[] args)
+        {            
+            LoadTasks();
+            while (true)
+            {
+                ShowMenu(); 
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":AddTask();break;
+                    case "2":ShowTask();break;
+                    case "3":DeleteTask();break;
+                    case "x":
+                        Console.WriteLine("Exit the program....");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        Pouse();
+                        break;
+                }
+            }
+        }
+
+        //UI Method
+        static void ShowMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("<===== To - Do - List ======>");
+            Console.WriteLine();
+            Console.WriteLine("1.Add Task");
+            Console.WriteLine("2.Show All Tasks");
+            Console.WriteLine("3.Delete Task");
+            Console.WriteLine("x.Exit");
+            Console.WriteLine();
+            Console.Write("Your choice is: ");
+        }
+
+        static void LoadTasks()
+        {
+            if (File.Exists(filePath))
+            {
+                string[] savedTasks = File.ReadAllLines(filePath);
+                toDoList.AddRange(savedTasks);
+            }
+        }
+        static void AddTask()
+        {
+            Console.Clear();
+            Console.WriteLine("<===== Adding a task ======>");
+            Console.WriteLine();
+            Console.Write("Enter Task: ");
+            string taskName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(taskName) || taskName.Length < 3)
+            {
+                Console.WriteLine("The task's name must contain a minimum of 3 characters.");
+                Console.ReadLine();
+            }
+            else
+            {
+                toDoList.Add(taskName);
+                using (StreamWriter write = new StreamWriter(filePath, true))
+                {
+                    write.WriteLine(taskName);
+                }
+                Console.WriteLine();
+                Console.WriteLine("Task is added!");
+            }
+            Pouse();
+        }
+
+        static void ShowTask()
+        {
+            Console.Clear();
+            Console.WriteLine("<===== List of Tasks =====>");
+            Console.WriteLine();
+            for (int i = 0; i < toDoList.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Pouse();
+        }
+
+        static void DeleteTask()
+        {
+            Console.Clear();
+            Console.WriteLine("\n<===== Deleting a task ======>");
+            Console.WriteLine();
+            for (int i = 0; i < toDoList.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Console.WriteLine();
+            Console.Write("Enter number of task: ");
+            int num;
+            if (int.TryParse(Console.ReadLine(), out num) && num > 0 && num <= toDoList.Count)
+            {
+                toDoList.Remove(toDoList[num - 1]);
+                using (StreamWriter writer = new StreamWriter(filePath, false))
+                {
+                    foreach (string task in toDoList)
+                    {
+                        writer.WriteLine(task);
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine($"Task {num} is deleted.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid number!!");
+            }
+            Pouse();
+        }
+
+        static void Pouse()
+        {
+            Console.WriteLine("\nPress ENTER to continue...");
+            Console.ReadLine();
+        }
+
+    }
+}
