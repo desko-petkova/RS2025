@@ -1,0 +1,58 @@
+    static void Main(string[] args)
+    {
+       TaskService taskService = new TaskService();
+
+        while (true)
+        {
+            ShowMenu();
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1": Add(taskService); break;
+                case "2": ShowAll(); break;
+                case "3": DeleteTask(); break;
+                case "x":
+                    Console.WriteLine("Exit the program....");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice!");
+                    Pouse();
+                    break;
+            }
+        }
+    }
+
+    private static void DeleteTask()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void ShowAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void Add(TaskService taskService)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void ShowMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("<===== To - Do - List ======>");
+        Console.WriteLine();
+        Console.WriteLine("1.Add Task");
+        Console.WriteLine("2.Show All Tasks");
+        Console.WriteLine("3.Delete Task");
+        Console.WriteLine("x.Exit");
+        Console.WriteLine();
+        Console.Write("Your choice is: ");
+    }
+
+    static void Pouse()
+    {
+        Console.WriteLine("\nPress ENTER to continue...");
+        Console.ReadLine();
+    }
+}

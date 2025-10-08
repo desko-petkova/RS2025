@@ -1,0 +1,35 @@
+public class TaskService
+{
+    private readonly TaskRepository repository;
+    private List<string> tasks;
+
+    public TaskService()
+    {
+        this.repository = new TaskRepository();
+        tasks = repository.LoadTasks();
+    }
+
+    public List<string> GetAllTasks()
+    {
+        return tasks;
+    }
+
+    public void AddTask(string taskName)
+    {
+        if (string.IsNullOrWhiteSpace(taskName) || taskName.Length < 3)
+            throw new ArgumentException("The task's name must contain a minimum of 3 characters.");
+
+        tasks.Add(taskName);
+        repository.AppendTask(taskName);
+    }
+    public void RemoveTask(int index)
+    {
+
+        if (index < 0 || index >= tasks.Count)
+            throw new ArgumentException("Invalid index.");
+
+        tasks.RemoveAt(index);
+        repository.SaveTasks(tasks);
+    }
+
+}

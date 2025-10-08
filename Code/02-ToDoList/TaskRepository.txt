@@ -1,0 +1,27 @@
+public class TaskRepository
+{
+    private readonly string filePath = "tasks.txt";
+
+    public List<string> LoadTasks()
+    {
+        if (File.Exists(filePath)) 
+        {
+            return new List<string>(File.ReadAllLines(filePath));
+        }
+        else
+        {
+            return new List<string>();
+        }
+    }
+
+    public void SaveTasks(List<string> tasks) 
+    {
+        File.WriteAllLines(filePath, tasks);
+    }
+
+    public void AppendTask(string taskName)
+    {
+        File.AppendAllText(filePath, taskName);
+    }
+
+}
