@@ -1,27 +1,26 @@
 public class TaskRepository
 {
-    private readonly string filePath = "tasks.txt";
+    private readonly string filePath = "tasks.txt"; // Пътят до файла, където се съхраняват задачите.
 
     public List<string> LoadTasks()
     {
-        if (File.Exists(filePath)) 
+        if (File.Exists(filePath)) // Проверява дали файлът съществува.
         {
-            return new List<string>(File.ReadAllLines(filePath));
+            return new List<string>(File.ReadAllLines(filePath)); // Зарежда всички редове (задачи) в списък.
         }
         else
         {
-            return new List<string>();
+            return new List<string>(); // Ако няма файл, връща празен списък.
         }
     }
 
-    public void SaveTasks(List<string> tasks) 
+    public void SaveTasks(List<string> tasks)
     {
-        File.WriteAllLines(filePath, tasks);
+        File.WriteAllLines(filePath, tasks); // Записва всички задачи наново във файла (използва се при изтриване).
     }
 
     public void AppendTask(string taskName)
     {
-        File.AppendAllText(filePath, taskName);
+        File.AppendAllText(filePath, taskName); // Добавя нова задача към края на файла.
     }
-
 }

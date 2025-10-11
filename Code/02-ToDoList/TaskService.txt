@@ -1,35 +1,36 @@
 public class TaskService
 {
-    private readonly TaskRepository repository;
-    private List<string> tasks;
+    private readonly TaskRepository repository; // Връзка с слоя за достъп до данни.
+    private List<string> tasks; // Локален списък от задачи, който държи текущото състояние в паметта.
 
     public TaskService()
     {
-        this.repository = new TaskRepository();
-        tasks = repository.LoadTasks();
+        this.repository = new TaskRepository(); // Инициализация на репозитори обекта.
+        tasks = repository.LoadTasks(); // Зареждане на съществуващите задачи от файл.
     }
 
     public List<string> GetAllTasks()
     {
-        return tasks;
+        return tasks; // Връща всички текущи задачи.
     }
 
     public void AddTask(string taskName)
     {
+        // Проверка за валидност на въведеното име.
         if (string.IsNullOrWhiteSpace(taskName) || taskName.Length < 3)
             throw new ArgumentException("The task's name must contain a minimum of 3 characters.");
 
-        tasks.Add(taskName);
-        repository.AppendTask(taskName);
+        tasks.Add(taskName); // Добавяне в локалния списък.
+        repository.AppendTask(taskName); // Добавяне и във файла чрез слоя за достъп до данни.
     }
+
     public void RemoveTask(int index)
     {
-
+        // Проверка за валиден индекс.
         if (index < 0 || index >= tasks.Count)
             throw new ArgumentException("Invalid index.");
 
-        tasks.RemoveAt(index);
-        repository.SaveTasks(tasks);
+        tasks.RemoveAt(index); // Изтриване от списъка.
+        repository.SaveTasks(tasks); // Презаписване на файла с актуализирания списък.
     }
-
 }
