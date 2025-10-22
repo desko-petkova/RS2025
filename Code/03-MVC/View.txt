@@ -1,0 +1,25 @@
+public class Display
+{
+    
+    public double Amount { get; set; }
+    public double Percent { get; set; }
+    public double Total { get; set; }
+    public double TipAmount { get; set; }
+    public Display()
+    {
+        Amount = 0;
+        Percent = 0;
+        Total = 0;
+        TipAmount = 0;
+        GetValues();
+    }
+    public void GetValues()
+    {
+           Console.Write("Enter the amount of the meal: ");
+                this.Amount = double.Parse(Console.ReadLine());
+
+                Console.Write("Enter the percent you want to tip: ");
+                this.Percent = double.Parse(Console.ReadLine());
+            
+    }
+}
