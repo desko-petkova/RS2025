@@ -6,13 +6,22 @@ public class TipCalculatorController
     public TipCalculatorController()
     {
         display = new Display();
+	try
+	{
+    		tip = new Tip(display.Amount, display.Percent);
 
-        tip = new Tip(display.Amount, display.Percent);
+    		display.TipAmount = tip.CalculateTip();
+    		display.Total = tip.CalculateTotal();
 
-        display.TipAmount = tip.CalculateTip();
-        display.Total = tip.CalculateTotal();
-
-        display.ShowTipAndTotal();
-
+    		display.ShowTipAndTotal();
+	}
+	catch (Exception ex)
+	{
+    		Console.WriteLine(ex.Message);
+	}
+	finally
+	{
+    		Console.WriteLine("Thank you for using tip calculator");
+	}
     }
 }

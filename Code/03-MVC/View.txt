@@ -1,25 +1,49 @@
 public class Display
 {
     
-    public double Amount { get; set; }
-    public double Percent { get; set; }
-    public double Total { get; set; }
-    public double TipAmount { get; set; }
-    public Display()
-    {
-        Amount = 0;
-        Percent = 0;
-        Total = 0;
-        TipAmount = 0;
-        GetValues();
-    }
-    public void GetValues()
-    {
-           Console.Write("Enter the amount of the meal: ");
-                this.Amount = double.Parse(Console.ReadLine());
+	public double Amount { get; set; }
+	public double Percent { get; set; }
+	public double Total { get; set; }
+	public double TipAmount { get; set; }
 
-                Console.Write("Enter the percent you want to tip: ");
-                this.Percent = double.Parse(Console.ReadLine());
-            
-    }
+	public Display()
+	{
+    		Amount = 0;
+    		Percent = 0;
+    		Total = 0;
+   		TipAmount = 0;
+    		GetValues();
+	}
+
+	public void GetValues()
+	{
+   		 bool isValid = false;
+   		 while (!isValid)
+    		{
+       		    try
+       		    {
+            		Console.Write("Enter the amount of the meal: ");
+           		this.Amount = double.Parse(Console.ReadLine());
+
+            		Console.Write("Enter the percent you want to tip: ");
+            		this.Percent = double.Parse(Console.ReadLine());
+
+            		isValid = true;
+       		     }
+        	     catch (FormatException)
+        	     {
+           		 Console.WriteLine("Invalid input! Please enter numeric values only.");
+        	     }
+        	     catch (Exception ex)
+        	     {
+            		Console.WriteLine("Error: "+ex.Message);
+        	     }
+
+    		}
+	}
+	public void ShowTipAndTotal()
+	{
+    		Console.WriteLine($"Tip: {TipAmount:F2}");
+    		Console.WriteLine($"Total: {Total:F2}");
+	}
 }

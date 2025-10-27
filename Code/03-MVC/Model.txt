@@ -4,18 +4,40 @@ public class Tip
     private double percent;
     public double Amount
     {
-        get; set;
+       get { return amount; }
+	set
+	{
+    		if(value < 0)
+    		throw new ArgumentException("The amount must be positive");
+
+    		amount = value;
+	}
     }
    
     public double Percent
     {
-        get; set;
+        get { return percent; }
+	set
+	{
+   		 if (value < 0)
+       		 throw new ArgumentException("The percent must be positive");
+    		if(value > 1)
+    		{
+       			 percent = value / 100.0;
+    		}
+    		else
+    		{
+        		percent = value;
+    		}
+	}
     }
+
     public Tip(double amount, double percent)
     {
         this.Amount = amount;
         this.Percent = percent;
     }
+
     public double CalculateTip()
     {
         return Amount * Percent;
