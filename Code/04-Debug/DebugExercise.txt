@@ -1,0 +1,44 @@
+static void Main(string[] args)
+{
+    Console.WriteLine("=== Student Grade Average Calculator ===");
+
+    double[] grades = { 6, 4.75, 5.5, 5.25, 4.0 };
+    double averageGrade = CalculateAverage(grades);
+
+    Console.WriteLine($"The average grade is: {averageGrade:F2}");
+
+    if (averageGrade > 5.50)
+        Console.WriteLine("Excellent!");
+    else if (averageGrade > 4.50)
+        Console.WriteLine("Very good!");
+    else
+        Console.WriteLine("Needs improvement...");
+
+  
+    Console.WriteLine("Press Enter to exit.");
+    Console.ReadLine();
+}
+
+
+static double CalculateAverage(double[] grades)
+{
+    double sum = 0;
+    for (int i = 0; i < grades.Length; i++) // Хвърля IndexOutOfRangeException 
+    {
+        sum += grades[i];
+    }
+
+    double average = sum / grades.Length;
+    return average;
+}
+
+static double FindMaxGrade(double[] grades)
+{
+    double max = 0;
+    for (int i = 1; i < grades.Length; i++)
+    {
+        if (grades[i] > max)
+            max = grades[i];
+    }
+    return max;
+}
