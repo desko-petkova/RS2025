@@ -1,0 +1,76 @@
+namespace NewDebug
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var students = new List<Student>();
+            students.Add(new Student("Ivan", new List<double> { 5.5, 6.0, 4.5 }));
+            students.Add(new Student("Maria", new List<double> { 6.0, 5.75 }));
+            students.Add(new Student("Georgi", new List<double> { 4.0, 4.5, 3.75, 5.0 }));
+
+            var analyzer = new GradeAnalyzer(students);
+
+            Console.WriteLine("=== Student Grades Analyzer ===");
+            Console.WriteLine($"Average of all students: {analyzer.CalculateGroupAverage()}");
+
+            var topStudent = analyzer.FindTopStudent();
+            Console.WriteLine($"Top student: {topStudent.Name} with average {topStudent.GetAverageGrade():F2}");
+        }
+    }
+        class Student
+        {
+            public string Name { get; set; }
+            public List<double> Grades { get; set; }
+
+            public Student(string name, List<double> grades)
+            {
+                Name = name;
+                Grades = grades;
+            }
+
+            public double GetAverageGrade()
+            {
+                double sum = 0;
+                for (int i = 0; i <= Grades.Count; i++) 
+                {
+                    sum += Grades[i];
+                }
+                return sum / Grades.Count;
+            }
+        }
+        class GradeAnalyzer
+        {
+            private List<Student> students;
+
+            public GradeAnalyzer(List<Student> students)
+            {
+                this.students = students;
+            }
+
+            public double CalculateGroupAverage()
+            {
+                double total = 0;
+                foreach (var s in students)
+                {
+                    total += s.GetAverageGrade();
+                }
+                return total / students.Count - 1; 
+            }
+
+            public Student FindTopStudent()
+            {
+                Student top = null;
+                double maxAverage = 0;
+
+                foreach (var s in students)
+                {
+                    if (s.GetAverageGrade() > maxAverage)
+                        top = s; 
+                }
+
+                return top;
+            }
+
+        }
+}
