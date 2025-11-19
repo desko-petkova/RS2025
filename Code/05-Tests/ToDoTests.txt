@@ -1,61 +1,65 @@
-using NUnit.Framework;
+private TaskService service;
+private string testFile = "tasks.txt";
 
-namespace NewToDo.Tests
+[SetUp]
+public void Setup()
 {
-    [TestFixture]
-    public class TaskServiceTests
-    {
-        private TaskService service;
-        private string testFile = "tasks.txt";
+    if (File.Exists(testFile))
+    { File.Delete(testFile); }
 
-        [SetUp]
-        public void Setup()
-        {
-            if (File.Exists(testFile)) 
-            {  File.Delete(testFile); }
+    service = new TaskService();
+}
 
-            service = new TaskService();
-        }
+[Test]
+public void AddTask_ValidNameStatus_ShouldAddTask()
+{
+    //Arrange from SetUp
 
-        [Test]
-        public void AddTask_ShouldAddTask()
-        {
-            //Arrenge from SetUp
-            //Act
-            service.AddTask("Homework");
-            //Assert
-            var tasks = service.GetAllTasks();
-            Assert.That(1, Is.EqualTo(tasks.Count));
-            Assert.That("Homework", Is.EqualTo(tasks[0].Name));
-            Assert.That(tasks[0].IsCompleted, Is.False);
-        }
-        [Test]
-        public void AddTask_InvalidName_ShouldThrowException()
-        {
-            // Arrange
-         
+    //Act
+        service.AddTask("Make coffee");
+    //Assert
+    var tasks = service.GetAllTasks();
+    Assert.That(1, Is.EqualTo(tasks.Count));
+    Assert.That("Make coffee", Is.EqualTo(tasks[0].Name));
+    Assert.That(tasks[0].IsCompleted, Is.False);
 
-            // Act + Assert (проверяваме дали методът хвърля изключение)
-            try
-            {
-                service.AddTask("  "); // празно име
-                Assert.Fail("Expected exception not thrown");
-            }
-            catch (ArgumentException)
-            {
-                Assert.Pass();
-            }
+}
+[Test]
+public void RemoveTask_ValidIndex_ShouldRemoveTask()
+{
+    //Arrange
+    service.AddTask("Task1");
+    service.AddTask("Task2");
+    //Act
+    service.RemoveTask(0);
+    //Assert
+    var tasks = service.GetAllTasks();
+    Assert.That(1, Is.EqualTo(tasks.Count));
+    Assert.That("Task2", Is.EqualTo(tasks[0].Name));
 
-            try
-            {
-                service.AddTask("ab"); // твърде късо име
-                Assert.Fail("Expected exception not thrown");
-            }
-            catch (ArgumentException)
-            {
-                Assert.Pass();
-            }
-        }
+}
+[Test]
+public void Edit_ValidIndexName_ShouldUpdateName()
+{
+    //Arrange
+    service.AddTask("Old Name");
+    //Act
+    service.Edit(0, "New Name");
+    //Assert
+    var tasks = service.GetAllTasks();
+    Assert.That("New Name", Is.EqualTo(tasks[0].Name));
+}
+[Test]
+public void ChangeStatus_ShouldChangeStatus()
+{
+    //Arrange
+    service.AddTask("Homework");
+    //Act
+    var tasks = service.GetAllTasks();
+    var firststatus = tasks[0].IsCompleted;
+    service.ChangeStatus(0);
+    var secondstatus = tasks[0].IsCompleted;
+    //Assert
+    Assert.That(secondstatus, Is.Not.EqualTo(firststatus));
 
-    }
 }
