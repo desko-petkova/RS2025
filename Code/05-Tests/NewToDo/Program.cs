@@ -1,0 +1,148 @@
+﻿namespace NewToDo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            TaskService taskService = new TaskService(); // Създаваме обект от бизнес слоя (TaskService), чрез който ще работим с данните.
+
+            while (true) // Безкраен цикъл за непрекъснато показване на менюто, докато потребителят не избере "x".
+            {
+                ShowMenu(); // Извежда основното меню на екрана.
+                string choice = Console.ReadLine(); // Чете избора на потребителя.
+
+                try // Използваме try-catch за обработка на грешки при въвеждане или работа с данните.
+                {
+                    switch (choice)
+                    {
+                        case "1": Add(taskService); break; // Добавяне на задача.
+                        case "2": ShowAll(taskService); break; // Показване на всички задачи.
+                        case "3": DeleteTask(taskService); break; // Изтриване на избрана задача.
+                        case "4": UpdateTask(taskService); break; // Изтриване на избрана задача.
+                        case "5": ChangeStatus(taskService); break; // Изтриване на избрана задача.
+                        case "x":
+                            Console.WriteLine("Exit the program...."); // Изход от програмата.
+                            return;
+                        default:
+                            Console.WriteLine("Invalid choice!"); // Грешен избор.
+                            Pouse(); // Изчакване на ENTER.
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message); // Показва съобщението за грешка.
+                    Pouse(); // Изчакване, за да може потребителят да види грешката.
+                }
+            }
+
+        }
+
+        private static void ChangeStatus(TaskService taskService)
+        {
+            Console.Clear(); // Изчиства конзолата.
+            Console.WriteLine("\n<===== Update status ======>");
+            Console.WriteLine();
+            var toDoList = taskService.GetAllTasks(); // Извлича всички задачи чрез бизнес слоя.
+            for (int i = 0; i < toDoList.Count; i++) // Извежда ги с номерация.
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Console.WriteLine();
+            Console.Write("Enter number of task: "); // Изисква избор от потребителя.
+            int num = int.Parse(Console.ReadLine());
+            taskService.StatusChange(num - 1);
+            Console.WriteLine();
+            Console.WriteLine($"Status of task {num} is updated."); // Потвърждение.
+            Pouse();
+        }
+
+        private static void UpdateTask(TaskService taskService)
+        {
+            Console.Clear(); // Изчиства конзолата.
+            Console.WriteLine("\n<===== Update task ======>");
+            Console.WriteLine();
+            var toDoList = taskService.GetAllTasks(); // Извлича всички задачи чрез бизнес слоя.
+            for (int i = 0; i < toDoList.Count; i++) // Извежда ги с номерация.
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Console.WriteLine();
+            Console.Write("Enter number of task: "); // Изисква избор от потребителя.
+            int num = int.Parse(Console.ReadLine()); // Преобразува избора в число.
+            Console.Write("Enter Task: ");
+            string taskName = Console.ReadLine();
+            taskService.Update((num-1),taskName);
+            Console.WriteLine();
+            Console.WriteLine($"Task {num} is updated."); // Потвърждение.
+            Pouse();
+        }
+
+        private static void DeleteTask(TaskService taskService)
+        {
+            Console.Clear(); // Изчиства конзолата.
+            Console.WriteLine("\n<===== Deleting a task ======>");
+            Console.WriteLine();
+            var toDoList = taskService.GetAllTasks(); // Извлича всички задачи чрез бизнес слоя.
+            for (int i = 0; i < toDoList.Count; i++) // Извежда ги с номерация.
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Console.WriteLine();
+            Console.Write("Enter number of task: "); // Изисква избор от потребителя.
+            int num = int.Parse(Console.ReadLine()); // Преобразува избора в число.
+            taskService.RemoveTask(num - 1); // Изтрива съответната задача (индексът е с -1).
+            Console.WriteLine();
+            Console.WriteLine($"Task {num} is deleted."); // Потвърждение.
+            Pouse(); // Изчакване.
+        }
+
+        private static void ShowAll(TaskService taskService)
+        {
+            Console.Clear();
+            Console.WriteLine("<===== List of Tasks =====>");
+            Console.WriteLine();
+            var toDoList = taskService.GetAllTasks(); // Извлича всички задачи.
+            for (int i = 0; i < toDoList.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}.{toDoList[i]}");
+            }
+            Pouse(); // Изчакване.
+        }
+
+        private static void Add(TaskService taskService)
+        {
+            Console.Clear();
+            Console.WriteLine("<===== Adding a task ======>");
+            Console.WriteLine();
+            Console.Write("Enter Task: ");
+            string taskName = Console.ReadLine(); // Чете името на новата задача.
+            taskService.AddTask(taskName); // Извиква бизнес логиката за добавяне.
+            Console.WriteLine();
+            Console.WriteLine("Task is added!"); // Потвърждение.
+            Pouse(); // Изчакване.
+        }
+
+        private static void ShowMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("<===== To - Do - List ======>");
+            Console.WriteLine();
+            Console.WriteLine("1.Add Task");
+            Console.WriteLine("2.Show All Tasks");
+            Console.WriteLine("3.Delete Task");
+            Console.WriteLine("4.Update Task");
+            Console.WriteLine("5.Update Status");
+            Console.WriteLine("x.Exit");
+            Console.WriteLine();
+            Console.Write("Your choice is: "); // Извежда опции.
+        }
+
+        static void Pouse()
+        {
+            Console.WriteLine("\nPress ENTER to continue...");
+            Console.ReadLine(); // Спира изпълнението, докато потребителят не натисне ENTER.
+        }
+
+    }
+}

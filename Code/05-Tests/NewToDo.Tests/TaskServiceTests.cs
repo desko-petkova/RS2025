@@ -1,0 +1,156 @@
+﻿using NewToDo;
+using NUnit.Framework;
+
+
+namespace NewToDoGroup1.Tests
+{
+    [TestFixture]
+    public class TaskServiceTests
+    {
+        // Глобални полета за тестовете
+        private TaskService service;
+        private string testFile = "tasks.txt";
+
+        // Изпълнява се преди всеки тест.
+        // Осигурява чиста среда: изтрива тестовия файл и създава нова TaskService.
+        [SetUp]
+        public void Setup()
+        {
+            if (File.Exists(testFile))
+            { File.Delete(testFile); }
+
+            service = new TaskService();
+        }
+
+        // ТЕСТ 1: Добавяне на валидна задача.
+        // Проверява, че задача с нормално име се добавя,
+        // броят на задачите е 1, името е правилно
+        // и статусът по подразбиране е IsCompleted = false.
+        [Test]
+        public void AddTask_ValidNameStatus_ShouldAddTask()
+        {
+            //Arrange from SetUp
+
+            //Act
+            service.AddTask("Make coffee");
+            //Assert
+            var tasks = service.GetAllTasks();
+            Assert.That(1, Is.EqualTo(tasks.Count));
+            Assert.That("Make coffee", Is.EqualTo(tasks[0].Name));
+            Assert.That(tasks[0].IsCompleted, Is.False);
+
+        }
+
+        // ТЕСТ 2: Изтриване на задача по валиден индекс.
+        // Проверява, че след премахване на задача с индекс 0,
+        // остава само Task2 и е на правилната позиция.
+        [Test]
+        public void RemoveTask_ValidIndex_ShouldRemoveTask()
+        {
+            //Arrange
+            service.AddTask("Task1");
+            service.AddTask("Task2");
+            //Act
+            service.RemoveTask(0);
+            //Assert
+            var tasks = service.GetAllTasks();
+            Assert.That(1, Is.EqualTo(tasks.Count));
+            Assert.That("Task2", Is.EqualTo(tasks[0].Name));
+
+        }
+
+        // ТЕСТ 3: Редактиране на задача.
+        // Проверява, че Edit променя името коректно.
+        [Test]
+        public void Edit_ValidIndexName_ShouldUpdateName()
+        {
+            //Arrange
+            service.AddTask("Old Name");
+            //Act
+            service.Update(0, "New Name");
+            //Assert
+            var tasks = service.GetAllTasks();
+            Assert.That("New Name", Is.EqualTo(tasks[0].Name));
+        }
+
+        // ТЕСТ 4: Смяна на статус (IsCompleted).
+        // Проверява, че след извикване на ChangeStatus,
+        // стойността на IsCompleted се обръща (true → false или false → true).
+        [Test]
+        public void ChangeStatus_ShouldChangeStatus()
+        {
+            //Arrange
+            service.AddTask("Homework");
+            //Act
+            var tasks = service.GetAllTasks();
+            var firststatus = tasks[0].IsCompleted;
+            service.StatusChange(0);
+            var secondstatus = tasks[0].IsCompleted;
+            //Assert
+            Assert.That(secondstatus, Is.Not.EqualTo(firststatus));
+
+        }
+
+        // ТЕСТ 5: Зареждане на задачи от файл.
+        // Проверява, че LoadTasks чете 2 записа от тестов файл,
+        // коректно задава имена и статус на задачите.
+        [Test]
+        public void LoadTasks_ShouldReturnList()
+        {
+            //Arrange
+            File.WriteAllLines(testFile, new[] { "Task1;false", "Task2;true" });
+            //Act
+            var repo = new TaskRepository();
+            var result = repo.LoadTasks();
+            //Assert
+            Assert.That(2, Is.EqualTo(result.Count));
+            Assert.That("Task1", Is.EqualTo(result[0].Name));
+            Assert.That(result[1].IsCompleted, Is.True);
+        }
+
+        // ТЕСТ 6: Добавяне на задача с невалидно име.
+        // Проверява, че AddTask хвърля ArgumentException
+        // при празен текст, интервали или твърде кратко име.
+        [Test]
+        public void AddTask_InvalidName_ShouldThrowException()
+        {
+            // Act + Assert (проверяваме дали методът хвърля изключение)
+            //try
+            //{
+            //    service.AddTask("  "); // празно име
+            //    Assert.Fail("Expected exception not thrown");
+            //}
+            //catch (ArgumentException)
+            //{
+            //    Assert.Pass();
+            //}
+
+            //Assert.Throws с ламбда израз в NUnit - заменя try..catch конструкцията
+            //() => service.AddTask(" ") е анонимна функция без параметър, която NUnit изпълнява вътре в себе си и очаква да хвърли ArgumentException.
+            Assert.Throws<ArgumentException>(() => service.AddTask(" "));
+            Assert.Throws<ArgumentException>(() => service.AddTask("ab"));
+        }
+
+        // ТЕСТ 7: Премахване на задача с невалиден индекс.
+        // Проверява, че RemoveTask хвърля ArgumentException,
+        // ако индексът е отрицателен или извън диапазона.
+        [Test]
+        public void RemoveTask_InvalidIndex_ShouldThrowException()
+        {
+            Assert.Throws<ArgumentException>(() => service.RemoveTask(-1));
+        }
+
+        // ТЕСТ 8: Редактиране с грешни параметри.
+        // Проверява два случая:
+        // 1) празно име при редакция
+        // 2) опит за редакция по невалиден индекс
+        // и в двата случая Edit трябва да хвърли ArgumentException.
+        [Test]
+        public void UpdateTask_InvalidData_ShouldThrowException()
+        {
+            service.AddTask("Task1");
+            Assert.Throws<ArgumentException>(() => service.Update(0, ""));
+            Assert.Throws<ArgumentException>(() => service.Update(2, "New task"));
+        }
+    }
+}
