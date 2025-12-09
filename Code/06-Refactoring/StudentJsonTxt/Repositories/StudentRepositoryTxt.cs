@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentJsonTxt.Repositories
 {
-    public class StudentRepositoryTxt
+    public class StudentRepositoryTxt : IStudentRepository
     {
         private readonly string _filePath;
         public StudentRepositoryTxt(string filePath = "students.txt")
@@ -18,8 +18,8 @@ namespace StudentJsonTxt.Repositories
             {
                 lines.Add($"{s.Name};{s.Grade}");
             }
-            File.AppendAllLines(_filePath, lines);  // Дописва редове към файл
-           // File.WriteAllLines(_filePath, lines); // Презаписва целия файл
+           // File.AppendAllLines(_filePath, lines);  // Дописва редове към файл
+           File.WriteAllLines(_filePath, lines); // Презаписва целия файл
         }
 
         public List<Student> Load()
@@ -29,13 +29,15 @@ namespace StudentJsonTxt.Repositories
             if (!File.Exists(_filePath))
                 return list;
 
-            //TODO  
-            //1.Прочитане на всички редове от файл
-            //2.Разделяне(Split) по;
-            //  * Първи елемент → име
-            //  * Втори елемент → оценка
-            //3.Създаване на Student
-            //4.Добавяне в List < Student >
+            var lines = File.ReadAllLines(_filePath);
+            foreach (var line in lines)
+            {
+                var parts = line.Split(';');
+                string name = parts[0];
+                int grade = int.Parse(parts[1]);
+
+                list.Add(new Student(name, grade));
+            }
 
             return list;
         }

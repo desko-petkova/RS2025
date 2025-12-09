@@ -7,7 +7,10 @@ namespace StudentJsonTxt
         static void Main(string[] args)
         {
             List<Student> students = new();
-            StudentRepositoryTxt repoTxt = new StudentRepositoryTxt();
+            IStudentRepository repoTxt = new StudentRepositoryTxt();
+            IStudentRepository repoJson = new StudentRepositoryJson();
+            IStudentRepository repoXml = new StudentRepositoryXml();
+
 
             while (true)
             {
@@ -19,6 +22,8 @@ namespace StudentJsonTxt
                 Console.WriteLine("4. Load TXT");
                 Console.WriteLine("5. Save JSON");
                 Console.WriteLine("6. Load JSON");
+                Console.WriteLine("7. Save Xml");
+                Console.WriteLine("8. Load Xml");
                 Console.WriteLine("x. Exit");
 
                 Console.WriteLine("Choose: ");
@@ -44,10 +49,29 @@ namespace StudentJsonTxt
                             Console.ReadLine();
                             break;
                         case "4":
+                            students = repoTxt.Load();
+                            Console.WriteLine("== Load from TXT ==");
+                            Console.ReadLine();
                             break;
                         case "5":
+                            repoJson.Save(students);
+                            Console.WriteLine("== Save in Json ==");
+                            Console.ReadLine();
                             break;
                         case "6":
+                            students = repoJson.Load();
+                            Console.WriteLine("== Load from Json ==");
+                            Console.ReadLine();
+                            break;
+                        case "7":
+                            repoXml.Save(students);
+                            Console.WriteLine("== Save in Xml ==");
+                            Console.ReadLine();
+                            break;
+                        case "8":
+                            students = repoXml.Load();
+                            Console.WriteLine("== Load from Xml ==");
+                            Console.ReadLine();
                             break;
                         case "x":
                             return;

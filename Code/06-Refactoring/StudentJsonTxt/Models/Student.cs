@@ -14,6 +14,7 @@ namespace StudentJsonTxt.Models
         public string Name { get; set; }
         public int Grade { get; set; }
 
+        public Student() { }
         public Student(string name, int grade)
         {
             Name = name;
