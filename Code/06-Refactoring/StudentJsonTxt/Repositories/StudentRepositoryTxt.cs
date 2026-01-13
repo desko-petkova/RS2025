@@ -1,16 +1,33 @@
-﻿using StudentJsonTxt.Models;
-using System.Collections.Generic;
+﻿// <copyright file="StudentRepositoryTxt.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace StudentJsonTxt.Repositories
 {
+    using System.Collections.Generic;
+    using StudentJsonTxt.Models;
+
+    /// <summary>
+    /// Реализация на IStudentRepository за работа с TXT файлове.
+    /// </summary>
     public class StudentRepositoryTxt : IStudentRepository
     {
+
         private readonly string _filePath;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StudentRepositoryTxt"/> class.
+        /// Създава TXT репозитори с подаден път до файл.
+        /// </summary>
         public StudentRepositoryTxt(string filePath = "students.txt")
         {
-            _filePath = filePath;
+            this._filePath = filePath;
         }
 
+        /// <summary>
+        /// Записва учениците в текстов файл.
+        /// Всеки ученик е на нов ред във формат: Name;Grade
+        /// </summary>
         public void Save(List<Student> students)
         {
             var lines = new List<string>();
@@ -18,18 +35,24 @@ namespace StudentJsonTxt.Repositories
             {
                 lines.Add($"{s.Name};{s.Grade}");
             }
-           // File.AppendAllLines(_filePath, lines);  // Дописва редове към файл
-           File.WriteAllLines(_filePath, lines); // Презаписва целия файл
+
+            File.WriteAllLines(this._filePath, lines); // Презаписва целия файл
         }
 
+        /// <summary>
+        /// Зарежда учениците от текстов файл.
+        /// </summary>
+        /// <returns>Списък с ученици</returns>
         public List<Student> Load()
         {
             var list = new List<Student>();
 
-            if (!File.Exists(_filePath))
+            if (!File.Exists(this._filePath))
+            {
                 return list;
+            }
 
-            var lines = File.ReadAllLines(_filePath);
+            var lines = File.ReadAllLines(this._filePath);
             foreach (var line in lines)
             {
                 var parts = line.Split(';');

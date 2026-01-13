@@ -1,16 +1,27 @@
-﻿using StudentJsonTxt.Models;
-using StudentJsonTxt.Repositories;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace StudentJsonTxt
 {
+    using StudentJsonTxt.Models;
+    using StudentJsonTxt.Repositories;
+
+    /// <summary>
+    /// Входна точка на приложението.
+    /// Демонстрира запис и зареждане на ученици в различни формати.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// Стартира конзолното меню.
+        /// </summary>
         static void Main(string[] args)
         {
             List<Student> students = new();
             IStudentRepository repoTxt = new StudentRepositoryTxt();
             IStudentRepository repoJson = new StudentRepositoryJson();
             IStudentRepository repoXml = new StudentRepositoryXml();
-
 
             while (true)
             {
@@ -91,7 +102,7 @@ namespace StudentJsonTxt
         {
             Console.Clear();
             Console.WriteLine("== List of all Students ==");
-            if(students.Count == 0)
+            if (students.Count == 0)
             {
                 Console.WriteLine("No Students!");
                 return;
@@ -108,7 +119,7 @@ namespace StudentJsonTxt
             Console.WriteLine("=== Add Student ===");
 
             Console.Write("Name: ");
-            string name  = Console.ReadLine();
+            string name = Console.ReadLine();
 
             Console.Write("Grade: ");
             int grade = int.Parse(Console.ReadLine());
