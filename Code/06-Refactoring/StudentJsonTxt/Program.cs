@@ -4,6 +4,7 @@
 
 namespace StudentJsonTxt
 {
+    using StudentJsonTxt.Facades;
     using StudentJsonTxt.Models;
     using StudentJsonTxt.Repositories;
 
@@ -19,9 +20,10 @@ namespace StudentJsonTxt
         static void Main(string[] args)
         {
             List<Student> students = new();
-            IStudentRepository repoTxt = new StudentRepositoryTxt();
-            IStudentRepository repoJson = new StudentRepositoryJson();
-            IStudentRepository repoXml = new StudentRepositoryXml();
+            //IStudentRepository repoTxt = new StudentRepositoryTxt();
+            //IStudentRepository repoJson = new StudentRepositoryJson();
+            //IStudentRepository repoXml = new StudentRepositoryXml();
+            StudentStorageFacade storage = new StudentStorageFacade();
 
             while (true)
             {
@@ -55,32 +57,32 @@ namespace StudentJsonTxt
                             Console.ReadLine();
                             break;
                         case "3":
-                            repoTxt.Save(students);
+                            storage.SaveAsTxt(students);
                             Console.WriteLine("== Save in TXT ==");
                             Console.ReadLine();
                             break;
                         case "4":
-                            students = repoTxt.Load();
+                            students = storage.LoadFromTxt();
                             Console.WriteLine("== Load from TXT ==");
                             Console.ReadLine();
                             break;
                         case "5":
-                            repoJson.Save(students);
+                            storage.SaveAsJson(students);
                             Console.WriteLine("== Save in Json ==");
                             Console.ReadLine();
                             break;
                         case "6":
-                            students = repoJson.Load();
+                            students = storage.LoadFromJson();
                             Console.WriteLine("== Load from Json ==");
                             Console.ReadLine();
                             break;
                         case "7":
-                            repoXml.Save(students);
+                            storage.SaveAsXml(students);
                             Console.WriteLine("== Save in Xml ==");
                             Console.ReadLine();
                             break;
                         case "8":
-                            students = repoXml.Load();
+                            students = storage.LoadFromXml();
                             Console.WriteLine("== Load from Xml ==");
                             Console.ReadLine();
                             break;
