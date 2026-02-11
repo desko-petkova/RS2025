@@ -1,0 +1,75 @@
+Тема:  Personal Finance Manager (Система за лични финанси)
+Домейн:
+•	Transaction (разход/приход), 
+•	Category (храна, транспорт, сметки…), 
+•	Budget (месечен бюджет по категория), 
+•	Goal (финансова цел — спестяване за нещо), 
+•	Account (наличности в различни сметки), 
+•	RecurringTransaction (абонаменти, сметки)
+
+Упражнение: Намери кое е домейн и кое не
+Инструкции:
+За всяко от следните твърдения определете към кой слой принадлежи:
+Domain (Домейн модел)
+Application (Service слой)
+UI (Потребителски интерфейс)
+Infrastructure (Data/Repository слой)
+
+Запишете отговора срещу всяко твърдение.
+
+Част 1: Класифициране
+1. Transaction
+Отговор: 
+
+2. TransactionService
+Отговор: 
+
+3. Console.WriteLine("Балансът е...")
+Отговор:
+
+4. SqlTransactionRepository
+Отговор: 
+
+5. Money
+Отговор: 
+
+6. CalculateMonthlyExpenses()
+Отговор: 
+
+7. Button_Click_AddTransaction
+Отговор: 
+8. Account.Withdraw(amount)
+Отговор: 
+
+9. TransactionType (Income, Expense)
+Отговор: 
+
+10. Repository.Save(transaction)
+Отговор: 
+
+11. Budget.IsExceeded()
+Отговор: 
+
+12. WinForms Form
+Отговор: 
+13. DateRange
+Отговор
+
+14. Filtering transactions by category
+Отговор: 
+15. Account balance cannot go below zero
+Отговор: 
+16. Goal.MarkAsCompleted()
+Отговор: 
+
+Част 2: Кратки казуси
+1. Къде трябва да се намира правилото: „Разход не може да надвишава баланса“?
+Отговор: 
+
+2. Къде трябва да се намира логиката за филтриране на транзакции по дата?
+Отговор: 
+
+3. Къде трябва да бъде кодът за показване на съобщение при грешка?
+Отговор: 
+4. Къде трябва да бъде логиката за записване в база данни?
+Отговор: 
