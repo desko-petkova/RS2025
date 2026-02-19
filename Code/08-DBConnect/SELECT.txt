@@ -1,0 +1,37 @@
+ int top = 10;
+ List<string> employeesNames = new List<string>();
+
+ string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=SoftUni;Trusted_Connection=True;";
+
+ var connection = new SqlConnection(connectionString);
+ //  string query = "SELECT TOP 10 * FROM Employees WHERE DepartmentID = @DepId";
+
+ string query = $"SELECT TOP (@topN) * FROM Employees";
+ string sql = @"
+             SELECT TOP (@topN) FirstName, LastName, Salary
+             FROM Employees e
+             WHERE DepartmentID = @depId
+             ORDER BY Salary DESC";
+
+ var command = new SqlCommand(sql, connection);
+ command.Parameters.AddWithValue("@topN", top);
+ command.Parameters.AddWithValue("@depId", 7);
+ using (connection)
+ {
+     connection.Open();
+
+     //command.Parameters.AddWithValue("@depId", 1);
+
+     var dbReader = command.ExecuteReader();
+
+     while (dbReader.Read())
+     {
+         string firstName = dbReader.GetString(1);
+         string? lastName = dbReader["LastName"].ToString();
+         employeesNames.Add($"{firstName} {lastName}");
+         // Console.WriteLine($"{dbReader["FirstName"]} {dbReader["LastName"]} -> {dbReader["Salary"]}");
+     }
+     connection.Close();
+ }
+
+     Console.WriteLine(string.Join("\n", employeesNames));

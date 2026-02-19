@@ -73,3 +73,49 @@ Infrastructure (Data/Repository слой)
 Отговор: 
 4. Къде трябва да бъде логиката за записване в база данни?
 Отговор: 
+
+
+Решения 
+Част 1: Класифициране
+
+Transaction — Domain (entity)
+
+TransactionService — Application (use cases)
+
+Console.WriteLine("Балансът е...") — UI (визуализация)
+
+SqlTransactionRepository — Infrastructure (достъп до данни)
+
+Money — Domain (value object)
+
+CalculateMonthlyExpenses() — Application (отчет/агрегация)
+
+Button_Click_AddTransaction — UI (event handler)
+
+Account.Withdraw(amount) — Domain (бизнес правило)
+
+TransactionType (Income, Expense) — Domain (enum)
+
+Repository.Save(transaction) — Infrastructure (persist)
+
+Budget.IsExceeded() — Domain (правило/логика)
+
+WinForms Form — UI (екран/форма)
+
+DateRange — Domain (value object)
+
+Filtering transactions by category — Application (заявка/филтър)
+
+Account balance cannot go below zero — Domain (инвариант)
+
+Goal.MarkAsCompleted() — Domain (промяна на състояние)
+
+Част 2: Кратки казуси
+
+„Разход не може да надвишава баланса“ — Domain (в Account)
+
+Филтриране по дата — Application (сервис/репорт)
+
+Показване на съобщение при грешка — UI (MessageBox/Console)
+
+Записване в база данни — Infrastructure (repository/DB)
